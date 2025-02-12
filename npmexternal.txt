@@ -1,0 +1,19 @@
+npm i react-router-dom react-toastify axios dotenv react-icons tailwindcss @tailwindcss/vite
+npm install @headlessui/react @heroicons/react
+npm install class-variance-authority
+
+
+*************vite.config.js*********************
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss(),],
+})
+************************************************
+
+****************index.css***********************
+@import "tailwindcss";
+************************************************
