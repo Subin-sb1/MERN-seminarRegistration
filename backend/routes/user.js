@@ -14,7 +14,7 @@ userRouter.post("/register", upload.single('image'), registerSeminar);
 userRouter.get("/getregistrations",getUserRegistration);
 userRouter.get("/getformdata",getFormData)
 userRouter.put("/update",upload.single('image'),updateFormData)
-
+ 
 
 userRouter.post('/create-order',createOrder)
 userRouter.post('/verify-payment',verifyPayment)

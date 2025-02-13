@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { backendUrl } from "../App";
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
 
 const Validate = () => {
-  const token = localStorage.getItem("token");  
-  let userId = "";
-  
-  if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      userId = payload.userId;
-    } catch (error) {
-      console.error("Error decoding token:", error);
-    }
-  }
+  var userId =""
+  const location = useLocation();  // Get location object which contains the query params
+
+  // Use URLSearchParams to extract query parameters from the search string
+  const params = new URLSearchParams(location.search);
+  const _id = params.get('_id');
+  userId=_id
+
+
 
   const [formData, setFormData] = useState({
-    userId: userId,
+    userId:userId,
     Name: "",
     email: "",
     mobileNumber: "",
@@ -39,9 +38,10 @@ const Validate = () => {
 
   useEffect(() => {
     const fetchFormData = async () => {
-      if (!userId) return;
       
       try {
+        console.log("before")
+        console.log(userId)
         const response = await axios.get(`${backendUrl}/getformdata`, {
           params: { userId },
           validateStatus: (status) => status < 500,
@@ -49,13 +49,14 @@ const Validate = () => {
 
         if (response.status === 200 && response.data) {
           setFormData(response.data);
+          console.log(response.data)
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchFormData();
+    fetchFormData(userId);
   }, [userId]);
 
   const handleAccept = async () => {

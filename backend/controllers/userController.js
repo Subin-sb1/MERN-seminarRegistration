@@ -136,7 +136,7 @@ const resetPassword = async (req, res) => {
      console.log(req.body)
      
      const image = req.file
-
+console.log(image.path)
      let result = await cloudinary.uploader.upload(image.path, { resource_type: 'image' });
      let imageUrl = result.secure_url;
 
@@ -153,7 +153,7 @@ const resetPassword = async (req, res) => {
       city,
       image1=imageUrl,
       accommodation,
-      postalCode
+      postalCode,
     } = req.body;
      
     // Validate required fields
@@ -162,7 +162,7 @@ const resetPassword = async (req, res) => {
     }
 
     // Check if user is already registered
-    const existingRegistration = await SeminarRegistration.findOne({ userId });
+    const existingRegistration = await SeminarRegistration.findOne({  userId: new mongoose.Types.ObjectId(userId) });
     if (existingRegistration) {
       return res.status(400).json({ message: "User already registered for the seminar" });
     }
@@ -186,6 +186,7 @@ const resetPassword = async (req, res) => {
       applicationStatus: "pending",
       approvalStatus: false,
       image1,
+         reason:"none",
       date: new Date()
     });
 
@@ -222,10 +223,9 @@ const getUserRegistration = async (req, res) => {
   const getFormData = async (req, res) => {
     try {
       const { userId } = req.query;
+      console.log(`Received user ID: ${userId}`);
   
-      if (!userId) {
-        return res.status(404).json({ message: "No user ID found" });
-      }
+   
   
       const getData = await SeminarRegistration.find({ userId: new mongoose.Types.ObjectId(userId) })
         .populate("userId", "name email");
@@ -343,8 +343,16 @@ const getUserRegistration = async (req, res) => {
       if(registration.approvalStatus==true){
         data.status='approved'
       }else{
-        data.status=registration.applicationStatus
+        if(registration.applicationStatus=="rejected"){
+            data.status=registration.applicationStatus
+            const reason = await SeminarRegistration.findOne({userId: new mongoose.Types.ObjectId(userId) }, "reason");
+          data.reason=reason.reason
+        }else{
+          data.status=registration.applicationStatus
+
+        }
       }
+      console.log(data)
     
       return res.status(200).json(data);
     } catch (error) {

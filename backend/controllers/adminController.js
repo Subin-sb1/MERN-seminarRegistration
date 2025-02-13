@@ -8,7 +8,7 @@ const getUserTable = async (req, res) => {
 
     // Transform the data into an array of objects
     const userDataArray = getData.map((registration) => ({
-      _id: registration._id || "h",
+      _id: registration.userId || "h",
       img: registration.image1 || "h",
       name: registration.userId?.name || "h",
       org: registration.age || "h", 

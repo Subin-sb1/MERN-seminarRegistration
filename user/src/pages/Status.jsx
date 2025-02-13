@@ -9,7 +9,7 @@ const Status = ({setToken}) => {
 
  const [status,setStatus]=useState("")
   var paymentAmount = "1000";
-  var rejectionReason="dd"
+  const [rejectionReason,setRejectionReason]=useState("")
 
   const token = localStorage.getItem("token");
   let userId = "";
@@ -27,6 +27,7 @@ const Status = ({setToken}) => {
         });
        
          setStatus(response.data.status)
+         setRejectionReason(response.data.reason)
        
       } catch (error) {
         console.error("Error accepting application:", error);

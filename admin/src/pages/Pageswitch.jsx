@@ -97,7 +97,7 @@ if (selectedFilter=="dashboard"){
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map(({ img, name, email, job, org, online, date }, index) => (
+                  {data.map(({ img, name, email, job, org, online, date ,_id}, index) => (
                     <tr key={name} className="hover:bg-gray-100 transition">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
@@ -120,7 +120,7 @@ if (selectedFilter=="dashboard"){
                       </td>
                       <td className="px-4 py-3">
                        
-                        <Link to="/validate">
+                        <Link to={`/validate?_id=${_id._id}`}>
                         <Tooltip content="Validate User">
                           <IconButton variant="text">
                           <CheckCircleIcon className="h-4 w-4 text-green-500" />
