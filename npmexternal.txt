@@ -3,6 +3,8 @@ npm install @headlessui/react @heroicons/react
 npm install class-variance-authority
 npm install -g concurrently
 
+npm run install-all("simple command to install all)
+npm run dev (single command to run )
 
 
 
