@@ -6,6 +6,7 @@
     "user": "cd user && npm start",
     "admin": "cd admin && npm start",
     "backend": "cd backend && npm start",
-    "dev": "concurrently \"npm run user\" \"npm run admin\" \"npm run backend\" "
+    "dev": "concurrently \"npm run user\" \"npm run admin\" \"npm run backend\" ",
+    "install-all": "concurrently \"cd user && npm install\" \"cd admin && npm install\" \"cd backend && npm install\""
   }
 }
