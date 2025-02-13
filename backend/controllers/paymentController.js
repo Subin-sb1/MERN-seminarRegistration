@@ -2,6 +2,7 @@ import crypto from "crypto";
 import razorpay from "../config/razorpay.js";
 import Payment from "../models/paymentModel.js";
 import mongoose from "mongoose";
+import SeminarRegistration from "../models/registerModel.js";
 
 const createOrder= async (req, res) => {
 
@@ -43,14 +44,26 @@ const verifyPayment = async (req, res) => {
     .digest("hex");
 
   if (expectedSignature === razorpay_signature) {
-    res.json({ success: true, message: "Payment verified successfully" });
-    
-   const updatedPayment = await Payment.findByIdAndUpdate( new mongoose.Types.ObjectId(userId), { $set: { status: "done" } }, { new: true });
-    console.log("Updated Payment:", updatedPayment);  
+    res.json({ success: true, message: "Payment verified successfully" });    
+    const objectId = new mongoose.Types.ObjectId(userId);
+
+        // Update the seminar registration status and store the rejection reason
+        const updatedPayment = await SeminarRegistration.findOneAndUpdate(
+            { userId: objectId }, // Search by userId
+            { $set: { approvalStatus:true } }, // Update status and add reason
+            { new: true }  )
+        
+            const Payments = await Payment.findOneAndUpdate(
+              { userId: objectId }, // Search by userId
+              { $set: { status:"done" } }, // Update status and add reason
+              { new: true }  )
+   console.log("Updated Payment:", updatedPayment);  
 } else {
     res.status(400).json({ success: false, message: "Invalid payment signature" });
-    await Payment.findByIdAndUpdate( new mongoose.Types.ObjectId(userId), { $set: { status: "failed" } }, { new: true });
-  }
+    await Payment.findOneAndUpdate(
+      { userId: objectId }, // Search by userId
+      { $set: { status:"failed" } }, // Update status and add reason
+      { new: true }  )  }
 };
 
 

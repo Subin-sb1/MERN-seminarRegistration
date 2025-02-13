@@ -205,10 +205,10 @@ const Formd = () => {
             <label className="block text-gray-500">Select Hotel</label>
             <select name="hotel" className="input-field" onChange={handleChange}>
               <option value="">Select Hotel</option>
-              <option value="Hotel A">Hotel A</option>
-              <option value="Hotel B">Hotel B</option>
-              <option value="Hotel C">Hotel C</option>
-              <option value="Hotel D">Hotel D</option>
+              <option value="Hotel A">The Oberoi Udaivilas, Udaipur ⭐⭐⭐⭐⭐</option>
+              <option value="Hotel B">Taj Falaknuma Palace, Hyderabad ⭐⭐⭐⭐⭐</option>
+              <option value="Hotel C">The Leela Palace, New Delhi ⭐⭐⭐⭐⭐</option>
+              <option value="Hotel D">ITC Grand Chola, Chennai ⭐⭐⭐⭐⭐</option>
             </select>
           </div>
         )}

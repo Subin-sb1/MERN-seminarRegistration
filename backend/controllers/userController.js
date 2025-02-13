@@ -72,7 +72,7 @@ const signUp = async (req, res) => {
 //Reset password
 const resetPassword = async (req, res) => {
     try {
-      const { email, otp, newPassword } = req.body;
+      const { email, otp, password } = req.body;
       const otpRecord = await OTP.findOne({ email });
       if (!otpRecord) {
         return res.status(400).json({ message: "OTP not found. Request a new one." });
@@ -83,7 +83,7 @@ const resetPassword = async (req, res) => {
       if (otpRecord.expiresAt < Date.now()) {
         return res.status(400).json({ message: "OTP has expired. Request a new one." });
       }
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
       await User.findOneAndUpdate({ email }, { password: hashedPassword });
       await OTP.deleteOne({ email });
       res.status(200).json({ message: "Password reset successful" });

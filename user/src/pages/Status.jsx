@@ -113,7 +113,7 @@ const Status = ({setToken}) => {
   return (
     <div>
       <Navbar setToken={setToken}/>
-      <div className="flex items-center space-x-4 p-4 border rounded-lg shadow-md bg-white">
+      <div className="flex items-center my-4 space-x-4 p-4 border rounded-lg shadow-md bg-white">
       {status === "pending" && (
         <div className="flex items-center space-x-2 text-yellow-500">
           <Clock className="w-6 h-6" />
@@ -139,7 +139,7 @@ const Status = ({setToken}) => {
           {rejectionReason && <p className="text-sm text-gray-600">Reason: {rejectionReason}</p>}
         </div>
       )}
-      {status === "approval" && (
+      {status === "approved" && (
         <div className="flex items-center space-x-2 text-green-500">
           <CheckCircle className="w-6 h-6" />
           <span>Approved</span>

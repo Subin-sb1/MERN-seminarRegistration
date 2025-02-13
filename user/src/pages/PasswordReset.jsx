@@ -55,22 +55,12 @@ const PasswordReset = () => {
        console.log("after axios")
       console.log(response);
       
-      if (response.data.success) {
+      if (response.status == 200) {
         
         toast.success(response.data.message, {
           autoClose: 1000 
       });
- 
-
-
-          setTimeout(() => {
-            if (response.data.success) {
-                navigate("/login");  // Redirect to Dashboard after delay
-            } else {
-                navigate("/forgotpassword");   // Redirect to Registration Page after delay
-            }
-        }, 1000);
-
+      navigate("/login"); 
       } else {
       
         toast.error(response.data.message);
@@ -87,7 +77,7 @@ const PasswordReset = () => {
     
     <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Reset Password</h2>
         <div className="mb-4">
           <label className="block text-gray-300">Email</label>
           <input
@@ -129,8 +119,8 @@ const PasswordReset = () => {
         </div>
 
         <button
-          className={`w-full py-2 mt-4 text-lg font-semibold rounded ${isFormValid ? "bg-blue-500" : "bg-gray-500 cursor-not-allowed"}`}
-       
+          className={`w-full py-2 mt-4 text-lg font-semibold rounded   ${isFormValid ? "bg-blue-500" : "bg-gray-500 cursor-not-allowed"}` }
+          disabled={!isFormValid}
           onClick={handleReset}
         > 
           Reset

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import SeminarRegistration from "../models/registerModel.js";
-
+import jwt from "jsonwebtoken"
 const getUserTable = async (req, res) => {
   try {
     // Fetch all seminar registrations
@@ -71,14 +71,14 @@ const Reject = async (req, res) => {
         if (!userId || !reason) {
             return res.status(400).json({ error: "User ID and rejection reason are required" });
         }
-
+ 
         // Convert userId to ObjectId
         const objectId = new mongoose.Types.ObjectId(userId);
-
+ 
         // Update the seminar registration status and store the rejection reason
         const updatedRegistration = await SeminarRegistration.findOneAndUpdate(
             { userId: objectId }, // Search by userId
-            { $set: { applicationStatus: "rejected", reason: reason } }, // Update status and add reason
+            { $set: { applicationStatus: "rejected", reason: reason ,approvalStatus:false} }, // Update status and add reason
             { new: true } // Return updated document
         );
 
@@ -92,6 +92,20 @@ const Reject = async (req, res) => {
     }
 };
 
+const adminLogin = async (req,res)=>{
+    try{
+    var {userid,password} = req.body;
+    if(userid === process.env.ADMIN_ID && password === process.env.ADMIN_PASSWORD)
+    {
+        var token = await jwt.sign(userid+password,process.env.JWT_SECRET);
+         res.status(200).json({success:true,token})
+    }else{
+        res.status(400).json({success:false,message:"Invalid credentials"})
+    }
+    } catch (error){
+      res.json(500).json({success:false,message:error.message})
+    }
+}
 
 
-export { getUserTable,Accept,Reject };
+export { getUserTable,Accept,Reject,adminLogin };
