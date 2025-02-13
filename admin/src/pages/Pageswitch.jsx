@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import { BarChart, Bar, XAxis, YAxis,  PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
@@ -16,7 +16,13 @@ import {
 } from "@material-tailwind/react";
 const TABLE_HEAD = ["Participants", "Gender & Age", "Status", "Country", "",""];
 const Pageswitch = ({data,selectedFilter}) => {
-const [totalValues,setTotalValues] = useState('')
+const totalItems = data.length
+
+const [page, setPage] = useState(1);
+const [totalPages, setTotalPages] = useState(1);
+const itemsPerPage = 10;
+
+
     const summaryData = [
       { name: "Total", value: 100 }, 
       { name: "Accepted", value: 60 },
@@ -34,6 +40,25 @@ const [totalValues,setTotalValues] = useState('')
       { day: "Sat", users: 35 },
       { day: "Sun", users: 50 },
     ];
+
+
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(totalItems / itemsPerPage));
+  }, [totalItems]);
+
+  const handleNext = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
 if (selectedFilter=="dashboard"){
 
     
@@ -113,7 +138,20 @@ if (selectedFilter=="dashboard"){
                         <Typography variant="small" color="blue-gray" className="font-normal opacity-70">{org}</Typography>
                       </td>
                       <td className="px-4 py-3">
-                        <Chip variant="ghost" size="sm" value={online ? "Online" : "Offline"} color={online ? "green" : "blue-gray"} />
+
+                        <Chip
+                          variant="ghost"
+                          size="sm"
+                          value={online}
+                          color={
+                            online === "accepted" || online === "Approved"
+                              ? "green"
+                              : online === "pending"
+                                ? "yellow"
+                                : "red"
+                          }
+                        />
+
                       </td>
                       <td className="px-4 py-3">
                         <Typography variant="small" color="blue-gray" className="font-normal">{date}</Typography>
@@ -142,12 +180,18 @@ if (selectedFilter=="dashboard"){
             </CardBody>
           </div>
           <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-            <Typography variant="small" color="blue-gray" className="font-normal">Page 1 of 10</Typography>
-            <div className="flex gap-2">
-              <Button variant="outlined" size="sm">Previous</Button>
-              <Button variant="outlined" size="sm">Next</Button>
-            </div>
-          </CardFooter>
+      <Typography variant="small" color="blue-gray" className="font-normal">
+        Page {page} of {totalPages}
+      </Typography>
+      <div className="flex gap-2">
+        <Button variant="outlined" size="sm" onClick={handlePrevious} disabled={page === 1}>
+          Previous
+        </Button>
+        <Button variant="outlined" size="sm" onClick={handleNext} disabled={page === totalPages}>
+          Next
+        </Button>
+      </div>
+    </CardFooter>
         </Card>
     </div>
   )

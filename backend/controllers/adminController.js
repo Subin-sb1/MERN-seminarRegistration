@@ -4,7 +4,15 @@ import SeminarRegistration from "../models/registerModel.js";
 const getUserTable = async (req, res) => {
   try {
     // Fetch all seminar registrations
-    const getData = await SeminarRegistration.find().populate("userId", "name email");
+    var getData;
+    var filter = req.query.filter;
+    
+    if (filter === "all") {
+        getData = await SeminarRegistration.find().populate("userId", "name email");
+    } else {
+        getData = await SeminarRegistration.find({ applicationStatus: filter }).populate("userId", "name email");
+    }
+    
 
     // Transform the data into an array of objects
     const userDataArray = getData.map((registration) => ({

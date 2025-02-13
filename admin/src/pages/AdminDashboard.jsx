@@ -32,8 +32,8 @@ const AdminDashboard = () => {
   const menuItems = [
     { icon: Home, label: "Dashboard", filter: "dashboard" },
     { icon: Users, label: "All applications", filter: "all" },
-    { icon: Users, label: "Accepted", filter: "accept" },
-    { icon: Users, label: "Rejected", filter: "reject" },
+    { icon: Users, label: "Accepted", filter: "accepted" },
+    { icon: Users, label: "Rejected", filter: "rejected" },
     { icon: Users, label: "Pending", filter: "pending" }
   ];
 
@@ -76,7 +76,7 @@ const AdminDashboard = () => {
           </AButton>
           <h1 className="text-xl font-bold text-white">{selectState}</h1>
         </div>
-        <Pageswitch data={data} selectedFilter={selectedFilter}/>
+        <Pageswitch data={data} selectedFilter={selectedFilter} />
       </div>
     </div>
   );
