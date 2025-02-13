@@ -14,7 +14,7 @@ import {
   IconButton,
   Tooltip
 } from "@material-tailwind/react";
-const TABLE_HEAD = ["Participants", "Gender & Age", "Status", "Country", "",""];
+const TABLE_HEAD = ["Participants", "Gender & Age", "Status", "Country", "Validate"];
 const Pageswitch = ({data,selectedFilter}) => {
 const totalItems = data.length
 
@@ -22,11 +22,15 @@ const [page, setPage] = useState(1);
 const [totalPages, setTotalPages] = useState(1);
 const itemsPerPage = 10;
 
+console.log(data)
+const totalAccepted = data.filter(person => person.online === "accepted").length;
+const totalRejected = data.filter(person => person.online === "rejected").length;
+
 
     const summaryData = [
-      { name: "Total", value: 100 }, 
-      { name: "Accepted", value: 60 },
-      { name: "Rejected", value: 40 },
+      { name: "Total", value: data.length }, 
+      { name: "Accepted", value: totalAccepted },
+      { name: "Rejected", value: totalRejected },
     ];
     
     const COLORS = ["#0088FE", "#00C49F", "#FF8042"];
@@ -69,7 +73,7 @@ if (selectedFilter=="dashboard"){
           {summaryData.map((item, index) => (
             <Card key={index} className="p-6 text-center rounded-2xl shadow-lg bg-gray-200 border border-gray-300">
               <h2 className="text-lg font-bold text-gray-700">{item.name} Applications</h2>
-              <p className="text-4xl font-semibold text-gray-900 mt-2">{data.length}</p>
+              <p className="text-4xl font-semibold text-gray-900 mt-2">{item.value}</p>
             </Card>
           ))}
           
@@ -142,15 +146,23 @@ if (selectedFilter=="dashboard"){
                         <Chip
                           variant="ghost"
                           size="sm"
-                          value={online}
+                          value={online === "accepted" ? "Accepted (Payment Pending)" : online}
                           color={
-                            online === "accepted" || online === "Approved"
+                            online === "Approved"
                               ? "green"
-                              : online === "pending"
+                              : online === "accepted"
                                 ? "yellow"
-                                : "red"
+                                : online === "pending"
+                                  ? "yellow"
+                                  : online === "Rejected"
+                                    ? "red"
+                                    : "gray" // Default color for unknown statuses
                           }
-                        />
+                           className="w-52 px-4"
+                        >
+                          {online === "accepted" ? "Accepted (Payment Pending)" : online}
+                        </Chip>
+
 
                       </td>
                       <td className="px-4 py-3">
@@ -161,18 +173,12 @@ if (selectedFilter=="dashboard"){
                         <Link to={`/validate?_id=${_id._id}`}>
                         <Tooltip content="Validate User">
                           <IconButton variant="text">
-                          <CheckCircleIcon className="h-4 w-4 text-green-500" />
+                          <PencilIcon className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
                         </Link>
                       </td>
-                      <td className="px-4 py-3">
-                        <Tooltip content="Edit User">
-                          <IconButton variant="text">
-                            <PencilIcon className="h-4 w-4" />
-                          </IconButton>
-                        </Tooltip>
-                      </td>
+                 
                     </tr>
                   ))}
                 </tbody>

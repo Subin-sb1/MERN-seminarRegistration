@@ -1,25 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Menu, User, X, Settings, Home, Users, Box } from "lucide-react";
+import { Menu, User, X, Home, Users, LogOut } from "lucide-react";
 import { AButton } from "../components/ui/AButton";
 import { backendUrl } from "../App";
 import Pageswitch from "./Pageswitch";
 
-
-
-
-const AdminDashboard = () => {
+const AdminDashboard = ({setToken}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("dashboard");
   const [selectState, setSelectState] = useState("Dashboard");
   const [data, setData] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const fetchData = async (filter) => {
     try {
       const response = await axios.get(`${backendUrl}/admin/usertable?filter=${filter}`);
       setData(response.data.userData);
-     
-      console.log(data)
     } catch (error) {
       console.error("Error fetching data", error);
     }
@@ -28,6 +24,11 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData(selectedFilter);
   }, [selectedFilter]);
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+    // Add logout functionality here
+  };
 
   const menuItems = [
     { icon: Home, label: "Dashboard", filter: "dashboard" },
@@ -63,18 +64,40 @@ const AdminDashboard = () => {
                 setSelectState(item.label);
               }}
             >
-               <item.icon className="h-5 w-5" />
+              <item.icon className="h-5 w-5" />
               <span>{item.label}</span>
             </AButton>
           ))}
         </nav>
       </div>
       <div className="flex-1 flex flex-col">
-        <div className="flex justify-between items-center p-4 bg-slate-800 shadow-lg">
+        <div className="flex justify-between items-center p-4 bg-slate-800 shadow-lg relative z-30">
           <AButton variant="ghost" size="icon" className="md:hidden text-slate-400 hover:text-white" onClick={() => setIsSidebarOpen(true)}>
             <Menu className="h-5 w-5" />
           </AButton>
           <h1 className="text-xl font-bold text-white">{selectState}</h1>
+          <div className="relative">
+            <AButton
+              variant="ghost"
+              size="icon"
+              className="text-slate-400 hover:text-white"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <User className="h-6 w-6" />
+            </AButton>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-50">
+                <AButton
+                  variant="ghost"
+                  className="flex w-full justify-start px-4 py-2 text-gray-700 hover:bg-gray-100"
+              
+                >
+                  <LogOut className="h-5 w-5 mr-2"      onClick={setToken("")}/> Logout
+                  
+                </AButton>
+              </div>
+            )}
+          </div>
         </div>
         <Pageswitch data={data} selectedFilter={selectedFilter} />
       </div>

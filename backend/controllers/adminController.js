@@ -7,7 +7,7 @@ const getUserTable = async (req, res) => {
     var getData;
     var filter = req.query.filter;
     
-    if (filter === "all") {
+    if (filter === "all" || filter ==="dashboard" ) {
         getData = await SeminarRegistration.find().populate("userId", "name email");
     } else {
         getData = await SeminarRegistration.find({ applicationStatus: filter }).populate("userId", "name email");

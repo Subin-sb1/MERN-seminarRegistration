@@ -20,7 +20,7 @@ localStorage.setItem('token',token)
        :
        <>
        <Routes>
-        <Route path="/" element={<AdminDashboard/>}/>
+        <Route path="/" element={<AdminDashboard setToken={setToken}/>}/>
         <Route path="/validate" element={<Validate/>}/>
        </Routes>
        </>

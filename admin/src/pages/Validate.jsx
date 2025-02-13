@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { backendUrl } from "../App";
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Validate = () => {
   var userId =""
   const location = useLocation();  // Get location object which contains the query params
-
+  const navigate = useNavigate();
   // Use URLSearchParams to extract query parameters from the search string
   const params = new URLSearchParams(location.search);
   const _id = params.get('_id');
@@ -63,6 +64,8 @@ const Validate = () => {
     try {
       await axios.post(`${backendUrl}/admin/accept`, { userId });
       alert("Application Accepted");
+      navigate("/"); 
+      
     } catch (error) {
       console.error("Error accepting application:", error);
     }
@@ -74,6 +77,7 @@ const Validate = () => {
       alert("Application Rejected");
       setShowRejectBox(false);
       setRejectReason("");
+      navigate("/"); 
     } catch (error) {
       console.error("Error rejecting application:", error);
     }
