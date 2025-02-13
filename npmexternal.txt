@@ -1,7 +1,12 @@
 npm i react-router-dom react-toastify axios dotenv react-icons tailwindcss @tailwindcss/vite
 npm install @headlessui/react @heroicons/react
 npm install class-variance-authority
+npm install -g concurrently
 
+
+
+
+npm run dev to run concurrently
 
 *************vite.config.js*********************
 import { defineConfig } from 'vite'
