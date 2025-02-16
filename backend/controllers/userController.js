@@ -7,7 +7,7 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import cloudinary from "../config/cloudinary.js";
 import mongoose from "mongoose";
-
+      
 dotenv.config();
 //User Landing Page
 const landingPage = (req, res) => {
@@ -154,6 +154,7 @@ console.log(image.path)
       image1=imageUrl,
       accommodation,
       postalCode,
+      hotel,
     } = req.body;
      
     // Validate required fields
@@ -186,6 +187,7 @@ console.log(image.path)
       applicationStatus: "pending",
       approvalStatus: false,
       image1,
+      accomDetails:hotel,
          reason:"none",
       date: new Date()
     });

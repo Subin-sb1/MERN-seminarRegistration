@@ -16,6 +16,7 @@ const seminarRegistrationSchema = new mongoose.Schema(
       postalCode: { type: String, required: true },
     },
     accommodation: { type: Boolean, default: false },
+    accomDetails:{ type: String },
     applicationStatus: { type: String, enum: ["pending", "accepted", "rejected",], default: "pending" },
     image1: { type: String, required: true },
     date: { type: Date, default: Date.now },

@@ -43,7 +43,7 @@ const Formd = () => {
     if (registration) {
       fetchFormData(); // Renamed function
     }
-  }, [registration]);
+  }, [registration,]);
 
   const fetchFormData = async () => { // Renamed function
     try {
@@ -89,11 +89,21 @@ const Formd = () => {
         setData(response.data);
         setRegistration(true);
       } else {
-        alert("Registration failed. Please try again.");
+        toast.update(loadingToast, {
+          render: response.data.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      alert("Error occurred. Please try again.");
+      toast.update(loadingToast, {
+        render: error.message,
+        type: "failed",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 

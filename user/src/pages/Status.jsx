@@ -84,6 +84,7 @@ const Status = ({setToken}) => {
             
             if (verifyResponse.data.success) {
               alert("Payment successful!");
+              window.location.reload();
             } else {
               alert("Payment verification failed!");
             }

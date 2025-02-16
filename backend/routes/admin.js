@@ -8,6 +8,6 @@ adminRouter.get('/usertable',getUserTable)
 adminRouter.post('/accept',Accept)
 adminRouter.post('/reject',Reject)
 adminRouter.post('/login',adminLogin)
-
+ 
 
 export default adminRouter;   
